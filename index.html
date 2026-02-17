@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Reader Anak - Analisis Mendalam | Juli 2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-dark: #2d2419;
+            --primary-medium: #4a3f35;
+            --primary-light: #6b5b4f;
+            --accent-gold: #d4a574;
+            --accent-gold-light: #e8c9a0;
+            --bg-cream: #f8f5f0;
+            --bg-light: #faf8f5;
+            --text-primary: #1a1510;
+            --text-secondary: #5c4d3f;
+            --text-muted: #8b7765;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-cream) 0%, #ede8e0 100%);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 70px 50px;
+            background: linear-gradient(135deg, #fff 0%, var(--bg-light) 100%);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(45, 36, 25, 0.12);
+            border: 1px solid rgba(212, 165, 116, 0.2);
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent-gold) 0%, var(--primary-medium) 50%, var(--accent-gold) 100%);
+        }
+        
+        .header-icon {
+            font-size: 64px;
+            margin-bottom: 25px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.4em;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+        
+        .parents-names {
+            font-size: 1.1em;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .birth-info {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            margin-top: 45px;
+            padding-top: 35px;
+            border-top: 2px solid rgba(212, 165, 116, 0.3);
+        }
+        
+        .birth-item {
+            text-align: center;
+            padding: 15px 25px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            border: 1px solid rgba(212, 165, 116, 0.15);
+        }
+        
+        .birth-label {
+            font-size: 0.75em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .birth-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.7em;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        /* Sections */
+        .section {
+            background: #fff;
+            padding: 55px 50px;
+            margin-bottom: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(45, 36, 25, 0.08);
+            border: 1px solid rgba(212, 165, 116, 0.12);
+        }
+        
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4em;
+            color: var(--text-primary);
+            margin-bottom: 30px;
+            padding-bottom: 18px;
+            border-bottom: 3px solid var(--accent-gold);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9em;
+            color: var(--primary-medium);
+            margin: 40px 0 25px;
+            font-weight: 600;
+        }
+        
+        h4 {
+            font-size: 1.25em;
+            color: var(--text-secondary);
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+        
+        /* Alert Box */
+        .alert-box {
+            background: linear-gradient(135deg, #fff8e7 0%, #fef5d6 100%);
+            border-left: 5px solid var(--accent-gold);
+            padding: 30px 35px;
+            margin: 40px 0;
+            border-radius: 0 12px 12px 0;
+            font-size: 0.95em;
+            line-height: 1.9;
+        }
+        
+        .alert-box strong {
+            color: #8b6914;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        /* Summary Box */
+        .summary-box {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-medium) 100%);
+            color: var(--bg-cream);
+            padding: 60px;
+            border-radius: 20px;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .summary-box::after {
+            content: '✨';
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            font-size: 48px;
+            opacity: 0.2;
+        }
+        
+        .summary-box h2 {
+            color: #fff;
+            border-bottom-color: rgba(255,255,255,0.25);
+        }
+        
+        .summary-intro {
+            font-size: 1.2em;
+            line-height: 2;
+            margin-bottom: 35px;
+            opacity: 0.95;
+        }
+        
+        /* Cards */
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-top: 35px;
+        }
+        
+        .highlight-card {
+            background: rgba(255,255,255,0.1);
+            padding: 28px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .highlight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .highlight-card .label {
+            font-size: 0.8em;
+            opacity: 0.85;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        
+        .highlight-card .value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6em;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+        
+        .badge-success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #81c784;
+        }
+        
+        .badge-gold {
+            background: rgba(212, 165, 116, 0.3);
+            color: var(--accent-gold-light);
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 0.95em;
+        }
+        
+        th, td {
+            padding: 18px 20px;
+            text-align: left;
+            border-bottom: 1px solid #e8ddd0;
+        }
+        
+        th {
+            background: var(--bg-light);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2em;
+        }
+        
+        tr:hover {
+            background: var(--bg-light);
+        }
+        
+        /* Tip Boxes */
+        .tip-box {
+            background: var(--bg-light);
+            border-radius: 16px;
+            padding: 32px;
+            margin: 30px 0;
+            border-left: 6px solid var(--accent-gold);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        
+        .tip-box h4 {
+            color: var(--primary-medium);
+            margin-top: 0;
+            font-size: 1.2em;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+        
+        .tip-box ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+        
+        .tip-box li {
+            margin: 12px 0;
+            line-height: 1.8;
+        }
+        
+        .tip-box.success {
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+            border-left-color: var(--success);
+        }
+        
+        .tip-box.success h4 {
+            color: #2e7d32;
+        }
+        
+        .tip-box.warning {
+            background: linear-gradient(135deg, #fff3e0 0%, #fff8e1 100%);
+            border-left-color: var(--warning);
+        }
+        
+        .tip-box.warning h4 {
+            color: #ef6c00;
+        }
+        
+        .tip-box.danger {
+            background: linear-gradient(135deg, #ffebee 0%, #fce4ec 100%);
+            border-left-color: var(--danger);
+        }
+        
+        .tip-box.danger h4 {
+            color: #c62828;
+        }
+        
+        .tip-box.info {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            border-left-color: var(--info);
+        }
+        
+        .tip-box.info h4 {
+            color: #1565c0;
+        }
+        
+        .tip-box.dark {
+            background: linear-gradient(135deg, var(--primary-medium) 0%, var(--primary-dark) 100%);
+            border-left-color: var(--accent-gold);
+            color: var(--bg-cream);
+        }
+        
+        .tip-box.dark h4 {
+            color: var(--accent-gold);
+        }
+        
+        /* Grid layouts */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .three-col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 45px;
+            margin: 40px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--accent-gold) 0%, var(--primary-medium) 50%, var(--accent-gold) 100%);
+            border-radius: 4px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            padding: 28px;
+            background: var(--bg-light);
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(212, 165, 116, 0.15);
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -40px;
+            top: 32px;
+            width: 18px;
+            height: 18px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+        
+        .timeline-age {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .timeline-phase {
+            color: var(--text-muted);
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Matrix table */
+        .matrix-table {
+            background: var(--bg-light);
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 30px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        
+        .matrix-table th {
+            background: var(--primary-dark);
+            color: var(--bg-cream);
+            font-size: 1.1em;
+        }
+        
+        .matrix-table tr:nth-child(even) {
+            background: rgba(212, 165, 116, 0.05);
+        }
+        
+        .match {
+            color: var(--success);
+            font-weight: 700;
+        }
+        
+        .difference {
+            color: var(--danger);
+            font-weight: 600;
+        }
+        
+        /* Element bars */
+        .element-chart {
+            margin: 35px 0;
+            background: var(--bg-light);
+            padding: 35px;
+            border-radius: 16px;
+        }
+        
+        .element-row {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .element-label {
+            width: 120px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        
+        .element-bar-container {
+            flex: 1;
+            height: 36px;
+            background: #e8e0d5;
+            border-radius: 18px;
+            overflow: hidden;
+            margin: 0 25px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .element-bar {
+            height: 100%;
+            border-radius: 18px;
+            transition: width 1s ease;
+        }
+        
+        .element-fire { background: linear-gradient(90deg, #c75b39 0%, #e0704a 100%); }
+        .element-earth { background: linear-gradient(90deg, #8b7355 0%, #a08060 100%); }
+        .element-wood { background: linear-gradient(90deg, #4a7c59 0%, #5a8f6a 100%); }
+        .element-metal { background: linear-gradient(90deg, #5a6b7d 0%, #6b7d8f 100%); }
+        .element-water { background: linear-gradient(90deg, #3d5a87 0%, #4a6fa5 100%); }
+        
+        .element-value {
+            width: 50px;
+            text-align: right;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 70px;
+            padding: 60px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-medium) 100%);
+            color: var(--accent-gold-light);
+            border-radius: 20px;
+            position: relative;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent 0%, var(--accent-gold) 50%, transparent 100%);
+        }
+        
+        .footer p {
+            margin: 15px 0;
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        
+        .blessing {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.7em;
+            font-style: italic;
+            color: #fff;
+            margin: 40px 0;
+            line-height: 1.7;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 20px 15px; }
+            h1 { font-size: 2.2em; }
+            .section { padding: 35px 25px; }
+            .birth-info { gap: 20px; }
+            .two-col, .three-col { grid-template-columns: 1fr; }
+            .highlight-grid { grid-template-columns: 1fr; }
+            .summary-box { padding: 40px 30px; }
+        }
+        
+        /* Special elements */
+        .insight-box {
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(212, 165, 116, 0.05) 100%);
+            border: 2px solid var(--accent-gold);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .insight-box h4 {
+            color: var(--primary-medium);
+            margin-top: 0;
+        }
+        
+        .comparison-highlight {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent-gold);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <span class="header-icon">👶✨🌟</span>
+            <h1>Character Reader Anak</h1>
+            <p class="subtitle">Laporan Karakter & Nasib yang Mendalam</p>
+            <p class="parents-names">Putra Zainal Anwar Nugroho & Kheptin</p>
+            
+            <div class="birth-info">
+                <div class="birth-item">
+                    <div class="birth-label">Tanggal Estimasi</div>
+                    <div class="birth-value">24 Juli 2026</div>
+                </div>
+                <div class="birth-item">
+                    <div class="birth-label">Shio</div>
+                    <div class="birth-value">Kuda Api 🔥🐴</div>
+                </div>
+                <div class="birth-item">
+                    <div class="birth-label">Usia Ortu</div>
+                    <div class="birth-value">Ayah 35 | Ibu 35</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Disclaimer -->
+        <div class="alert-box">
+            <strong>⚠️ Penting: Perhatian Orang Tua</strong>
+            Analisis ini berdasarkan estimasi tanggal lahir 24 Juli 2026, pukul 12:00 siang. Waktu lahir yang sebenarnya dapat mempengaruhi beberapa aspek terutama BaZi (Pilar Jam), Human Design (Gates/Channels), dan Zi Wei (Posisi Palace). Disarankan untuk membuat ulang laporan ini setelah kelahiran dengan waktu yang akurat.
+        </div>        
+        <div class="summary-box">
+            <h2>🌟 Ringkasan Eksekutif: Profil Utama</h2>
+            
+            <p class="summary-intro">
+                Anak Anda adalah sosok <strong>Manifesting Generator 6/2 dengan Otoritas Splenic</strong>, 
+                memiliki <strong>Triple Match</strong> yang langka dengan orang tuanya. Dengan Day Master 
+                <strong>Ji Earth (Bumi Subur)</strong> yang fleksibel dan Life Path <strong>5 (Freedom Seeker)</strong>, 
+                anak ini akan tumbuh menjadi individu yang adaptif, mandiri, dan berdampak—dengan pendekatan parenting yang tepat.
+            </p>
+            
+            <div class="highlight-grid">
+                <div class="highlight-card">
+                    <div class="label">BaZi Day Master</div>
+                    <div class="value">己 Ji Earth</div>
+                    <span class="badge badge-gold">Fleksibel & Subur</span>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="label">Human Design</div>
+                    <div class="value">MG 6/2 Splenic</div>
+                    <span class="badge badge-success">Sama Ayah</span>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="label">Life Path</div>
+                    <div class="value">5 - Freedom</div>
+                    <span class="badge badge-gold">Petualang</span>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="label">Matrix Arcana</div>
+                    <div class="value">The Devil</div>
+                    <span class="badge badge-gold">Power</span>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="label">Zi Wei Life</div>
+                    <div class="value">Zi Wei Emperor</div>
+                    <span class="badge badge-success">Kaisar</span>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="label">Otoritas</div>
+                    <div class="value">Splenic</div>
+                    <span class="badge badge-success">Triple Match</span>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="section">
+            <h2>🏛️ BaZi: Analisis Empat Pilar Mendalam</h2>
+            
+            <h3>Empat Pilar Kelahiran</h3>
+            <table>
+                <tr>
+                    <th>Pilar</th>
+                    <th>Langit (天干)</th>
+                    <th>Bumi (地支)</th>
+                    <th>Unsur</th>
+                    <th>Makna Mendalam</th>
+                </tr>
+                <tr>
+                    <td><strong>Tahun</strong></td>
+                    <td>丙 Bing (Api Yang)</td>
+                    <td>午 Wu (Kuda)</td>
+                    <td>🔥 Api</td>
+                    <td>Energi tahun: Passion & Drive</td>
+                </tr>
+                <tr>
+                    <td><strong>Bulan</strong></td>
+                    <td>乙 Yi (Kayu Yin)</td>
+                    <td>未 Wei (Kambing)</td>
+                    <td>🌿 Kayu</td>
+                    <td>Hubungan ortu: Pertumbuhan & Nurturing</td>
+                </tr>
+                <tr style="background: #fef9f3;">
+                    <td><strong>Hari ⭐</strong></td>
+                    <td><strong>己 Ji (Bumi Yin)</strong></td>
+                    <td>亥 Hai (Babi)</td>
+                    <td>🟤 Bumi</td>
+                    <td><strong>Karakter Inti: Fleksibel & Subur</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Jam</strong></td>
+                    <td>庚 Geng (Logam Yang)</td>
+                    <td>午 Wu (Kuda)</td>
+                    <td>⚪ Logam</td>
+                    <td>Keturunan: Struktur & Disiplin</td>
+                </tr>
+            </table>
+            
+            <h3>Distribusi Lima Unsur: Siklus Sehat</h3>
+            <div class="element-chart">
+                <div class="element-row">
+                    <div class="element-label">🔥 Api</div>
+                    <div class="element-bar-container">
+                        <div class="element-bar element-fire" style="width: 37.5%;"></div>
+                    </div>
+                    <div class="element-value">3</div>
+                </div>
+                
+                <div class="element-row">
+                    <div class="element-label">🟤 Bumi</div>
+                    <div class="element-bar-container">
+                        <div class="element-bar element-earth" style="width: 25%;"></div>
+                    </div>
+                    <div class="element-value">2</div>
+                </div>
+                
+                <div class="element-row">
+                    <div class="element-label">🌿 Kayu</div>
+                    <div class="element-bar-container">
+                        <div class="element-bar element-wood" style="width: 12.5%;"></div>
+                    </div>
+                    <div class="element-value">1</div>
+                </div>
+                
+                <div class="element-row">
+                    <div class="element-label">⚪ Logam</div>
+                    <div class="element-bar-container">
+                        <div class="element-bar element-metal" style="width: 12.5%;"></div>
+                    </div>
+                    <div class="element-value">1</div>
+                </div>
+                
+                <div class="element-row">
+                    <div class="element-label">💧 Air</div>
+                    <div class="element-bar-container">
+                        <div class="element-bar element-water" style="width: 12.5%;"></div>
+                    </div>
+                    <div class="element-value">1</div>
+                </div>
+            </div>
+            
+            <div class="tip-box success">
+                <h4>🌱 Analisis Siklus Unsur: Mengapa Ini Sehat?</h4>
+                <p>Anak Anda memiliki siklus elemen yang <strong>sangat seimbang</strong>:</p>
+                
+                <p style="margin-top: 15px;"><strong>Kayu (1) → Api (3) → Bumi (2) → Logam (1) → Air (1) → Kayu</strong></p>
+                
+                <ul>
+                    <li><strong>Kayu</strong> (Pertumbuhan) membakar menjadi <strong>Api</strong> (Passion)</li>
+                    <li><strong>Api</strong> membakar menjadi <strong>Bumi</strong> (Stabilitas)</li>
+                    <li><strong>Bumi</strong> menghasilkan <strong>Logam</strong> (Struktur)</li>
+                    <li><strong>Logam</strong> melebur menjadi <strong>Air</strong> (Kebijaksanaan)</li>
+                    <li><strong>Air</strong> menumbuhkan <strong>Kayu</strong> (Pertumbuhan lagi)</li>
+                </ul>
+                
+                <p>Ini adalah siklus produktif yang sempurna—tidak ada elemen yang mendominasi atau terlalu lemah. Emosi akan stabil dan adaptabilitas tinggi.</p>
+            </div>
+            
+            
+            <h3>己 Ji Earth (Bumi Subur): Karakter Inti</h3>
+            
+            <div class="insight-box">
+                <h4>🎯 Makna Mendalam Ji Earth</h4>
+                <p>Ji Earth adalah "Tanah Kebun" atau "Tanah Subur"—berbeda total dengan Xin Metal (Logam/Perhiasan) milik Ayah:</p>
+                
+                <div class="comparison-highlight">
+                    <strong>Ji Earth di Hai (Babi Air):</strong> Tanah subur yang selalu teraliri air. Ini adalah posisi "tumbuh kembang" yang ideal. Anak ini akan mudah berkembang dengan dukungan yang tepat, tapi bisa "terlalu basah" (overly emotional) tanpa batasan.
+                </div>
+            </div>
+            
+            <table style="margin-top: 25px;">
+                <tr>
+                    <th>Aspek Karakter</th>
+                    <th>Xin Metal (Ayah)</th>
+                    <th>Ji Earth (Anak)</th>
+                    <th>Implikasi Parenting</th>
+                </tr>
+                <tr>
+                    <td><strong>Sifat Dasar</strong></td>
+                    <td>Kaku, perfeksionis, kritis</td>
+                    <td style="color: #2e7d32; font-weight: 600;">Fleksibel, supportif, sabar</td>
+                    <td>Anak mudah diarahkan tapi butuh struktur</td>
+                </tr>
+                <tr>
+                    <td><strong>Cara Belajar</strong></td>
+                    <td>Dari kesalahan sendiri, independen</td>
+                    <td style="color: #2e7d32; font-weight: 600;">Menerima bimbingan, adaptable</td>
+                    <td>Terima saran ortu lebih baik</td>
+                </tr>
+                <tr>
+                    <td><strong>Reaksi Konflik</strong></td>
+                    <td>Bertahan, keras kepala, debat</td>
+                    <td style="color: #2e7d32; font-weight: 600;">Mengalah, cari harmoni, kompromi</td>
+                    <td>Jangan terlalu keras—dia akan menyerah</td>
+                </tr>
+                <tr>
+                    <td><strong>Kebutuhan Struktur</strong></td>
+                    <td>Struktur internal kuat</td>
+                    <td style="color: #2e7d32; font-weight: 600;">Butuh struktur EKTERNAL</td>
+                    <td>Ortu harus berikan "wadah" jelas</td>
+                </tr>
+                <tr>
+                    <td><strong>Tantangan</strong></td>
+                    <td>Terlalu kritis, kurang empati</td>
+                    <td style="color: #c75b39; font-weight: 600;">Indecisive, over-giving, mudah dipengaruhi</td>
+                    <td>Bantu ambil keputusan, tegakkan boundaries</td>
+                </tr>
+            </table>
+            
+            
+            <div class="tip-box warning">
+                <h4>⚠️ Tantangan Ji Earth yang Wajib Diperhatikan</h4>
+                
+                <ol>
+                    <li><strong>Indecisive (Sulit Memutuskan):</strong> Ji Earth yang "terlalu subur" bisa terlalu akomodatif. Anak akan sulit memilih.<br>
+                    <strong>Solusi:</strong> Berikan pilihan terbatas ("Pilih A atau B"), bukan terbuka ("Kamu mau apa?")</li>
+                    
+                    <li><strong>Over-Giving:</strong> Cenderung terlalu banyak memberi/mengalah sampai kelelahan.<br>
+                    <strong>Solusi:</strong> Ajarkan boundaries sejak dini. It's okay to say no.</li>
+                    
+                    <li><strong>Butuh Struktur Eksternal:</strong> Tidak seperti Metal yang struktur internalnya kuat, Bumi butuh "wadah" dari luar.<br>
+                    <strong>Solusi:</strong> Berikan rutinitas, jadwal, dan aturan yang jelas tapi fleksibel.</li>
+                </ol>
+            </div>
+        </div>
+        
+        
+        <div class="section">
+            <h2>🧬 Human Design: Manifesting Generator 6/2</h2>
+            
+            <h3>Triple Splenic Match: Fenomena Langka!</h3>
+            
+            <div class="tip-box dark">
+                <h4>🌟 Hanya 2% Populasi Dunia!</h4>
+                
+                <p>Keluarga Anda memiliki TIGA orang dengan otoritas Splenic—ini adalah konfigurasi yang sangat langka dan berharga.</p>
+                
+                <div class="three-col" style="margin-top: 25px; color: #f5f0e8;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
+                        <strong>Ayah</strong><br>
+                        Splenic Authority<br>
+                        MG 6/3
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
+                        <strong>Ibu</strong><br>
+                        Splenic Authority<br>
+                        Projector
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
+                        <strong>Anak</strong><br>
+                        Splenic Authority<br>
+                        MG 6/2
+                    </div>
+                </div>
+                
+                <p style="margin-top: 25px;"><strong>Apa Artinya:</strong></p>
+                
+                <ul>
+                    <li><strong>Koneksi Telepatik:</strong> Kalian akan sering "tahu" apa yang dipikirkan satu sama lain tanpa bicara</li>
+                    <li><strong>Keputusan Instan:</strong> Semua membuat keputusan dengan cepat berdasarkan intuisi—jangan ditanya "kenapa"</li>
+                    <li><strong>Sensitivitas Lingkungan:</strong> Semua peka terhadap "vibe"—rumah harus nyaman dan aman</li>
+                    <li><strong>Bahaya:</strong> Bisa stres bersamaan—jika satu merasa ancaman, yang lain ikut</li>
+                </ul>
+            </div>
+            
+            
+            <h3>Single Definition: Lebih Utuh dari Orang Tuanya</h3>
+            
+            <div class="insight-box">
+                <h4>🔄 Perbedaan Fundamental</h4>
+                
+                <div class="two-col">
+                    <div>
+                        <strong>Anak (Single Definition):</strong><br>
+                        Semua pusat terhubung dalam satu aliran kontinu.<br>
+                        ✓ Merasa "whole" dan utuh<br>
+                        ✓ Tidak terpecah-pecah<br>
+                        ✓ Konsistensi energi
+                    </div>
+                    
+                    <div>
+                        <strong>Ortu (Split Definition):</strong><br>
+                        Energi terpecah dalam beberapa area.<br>
+                        ✓ Kadang konflik internal<br>
+                        ✓ Butuh orang lain untuk "bridge"<br>
+                        ✓ Proses pengambilan keputusan berbeda
+                    </div>
+                </div>
+                
+                <p style="margin-top: 20px;"><strong>Implikasi:</strong> Anak ini mungkin tidak mengerti kenapa orang tuanya terkadang "terpecah" dalam energi. Dia akan lebih konsisten dan whole.</p>
+            </div>
+            
+            
+            <h3>Profile 6/2: The Role Model Hermit</h3>
+            
+            <div class="tip-box info">
+                <h4>🎭 Memahami Profil 6/2</h4>
+                
+                <p>Profil 6/2 adalah kombinasi unik dari Role Model (6) dan Hermit (2):</p>
+                
+                <ul>
+                    <li><strong>Line 6 (Role Model):</strong> 0-30 tahun fase eksperimen/shadow, 30+ menjadi contoh bagi orang lain</li>
+                    <li><strong>Line 2 (Hermit):</strong> Natural talent, butuh waktu sendiri, dipanggil untuk berbagi</li>
+                </ul>
+                
+                <p><strong>Hasil Kombinasi:</strong> "The Role Model who needs to retreat"—seseorang yang menjadi contoh sambil juga butuh waktu mengasingkan diri.</p>
+            </div>
+            
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-age">0-30 Tahun: Fase Eksperimen (Shadow Phase)</div>
+                    <div class="timeline-phase">Trial & Error — Mencoba dan Gagal adalah Normal</div>
+                    <p>Anak akan melalui fase trial-and-error. Ini BUKAN kegagalan—ini adalah <strong>proses pembelajaran wajib</strong> untuk 6/2.</p>
+                    
+                    <p><strong>Bedanya dengan Ayah (6/3):</strong> Ayah belajar melalui <strong>krisis</strong> (3), anak belajar melalui <strong>talenta alami</strong> (2) yang muncul effortless.</p>
+                    
+                    <p><strong>Parenting Strategy:</strong> Biarkan dia mencoba banyak hal. Jangan tekan untuk "berhasil" sejak dini. Gagal adalah guru terbaiknya.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-age">30+ Tahun: Fase Role Model (Going to the Roof)</div>
+                    <div class="timeline-phase">Naik ke Atap — Mengamati dari Jauh</div>
+                    <p>Setelah 30 tahun, dia akan secara alami menarik diri (Hermit) dan menjadi contoh (Role Model) tanpa berusaha keras.</p>
+                    
+                    <p><strong>Ciri-ciri:</strong> Lebih suka mengamati dari jauh, menjadi tempat orang lain mencari nasihat, tidak lagi aktif "mencoba" seperti di masa muda.</p>
+                    
+                    <p><strong>Bedanya dengan Ayah (6/3):</strong> Ayah setelah 30 masih aktif mencoba (3), anak setelah 30 lebih suka mengamati dari jauh (2).</p>
+                </div>
+            </div>
+            
+            
+            <h3>Line 2 (The Hermit): Parenting Kritis!</h3>
+            
+            <div class="tip-box danger">
+                <h4>🏠 Understanding the Hermit (Ini PENTING!)</h4>
+                
+                <p>Line 2 punya karakteristik unik yang harus dipahami orang tua:</p>
+                
+                <ol>
+                    <li><strong>Natural Talent:</strong> Dia punya bakat yang muncul tanpa usaha keras. <br>
+                    <strong>Action:</strong> AMATI apa yang mudah baginya—itu bakat alaminya!</li>
+                    
+                    <li><strong>Butuh Waktu Sendiri:</strong> Hermit bukan antisosial—waktu sendiri adalah kebutuhan, bukan pilihan.<br>
+                    <strong>Action:</strong> Jangan paksa sosialisasi. Respect waktu "menghilang" ke kamarnya.</li>
+                    
+                    <li><strong>Jangan Push:</strong> Dia akan dipanggil untuk berbagi talentanya saat siap.<br>
+                    <strong>Action:</strong> Jangan paksa dia perform atau "tunjukkan bakatmu". Biarkan orang lain yang memanggilnya.</li>
+                    
+                    <li><strong>Suara Hati:</strong> "I know I can do this, but don't ask me to prove it."<br>
+                    <strong>Action:</strong> Jangan tanya "Kenapa kamu nggak latihan?” atau “Tunjukkan dong!”</li>
+                </ol>
+            </div>
+            
+            
+            <h3>Manifesting Generator: Keunggulan & Tantangan</h3>
+            
+            <div class="two-col">
+                <div class="tip-box success">
+                    <h4>✅ Kelebihan MG</h4>
+                    
+                    <ul>
+                        <li>Bisa <strong>inisiatif</strong> DAN merespons (unlike pure Generator)</li>
+                        <li>Energi kerja sangat tinggi (Sacral defined)</li>
+                        <li>Multitasking natural</li>
+                        <li>Cepat dan efisien</li>
+                        <li>Emotional clarity (Solar Plexus defined)</li>
+                        <li>Willpower konsisten (Heart defined)</li>
+                    </ul>
+                </div>
+                
+                <div class="tip-box warning">
+                    <h4>⚠️ Tantangan MG</h4>
+                    
+                    <ul>
+                        <li>Bisa <strong>impulsif</strong> karena bisa inisiatif</li>
+                        <li><strong>Frustrasi</strong> jika diperlambat atau dihalangi</li>
+                        <li>Butuh banyak stimulus/variasi</li>
+                        <li>Resistensi jika dipaksa jalur linear</li>
+                        <li>Not-Self: Frustration + Anger</li>
+                    </ul>
+                </div>
+            </div>
+            
+            
+            <div class="insight-box">
+                <h4>🎯 Strategy untuk MG: To Respond + Visualize</hal4>
+                
+                <p><strong>Strategy:</strong> Respon dulu, visualisasikan, baru inisiatif.</p>
+                
+                <p><strong>Cara Parenting yang Benar:</strong></p>
+                
+                <ul>
+                    <li>Jangan tanya "Apa yang kamu mau?” (terlalu terbuka)</li>
+                    <li>Tanya "Apa yang membuat kamu bersemangat?” (butuh respons)</li>
+                    <li>Berikan variasi—MG bosen dengan rutinitas monoton</li>
+                    <li>Jangan micromanage—MG butuh kecepatan</li>
+                </ul>
+            </div>
+        </div>
+        
+        
+        <div class="section">
+            <h2>🔢 Numerologi: Life Path 5 & The Devil</h2>
+            
+            <div class="three-col" style="margin-bottom: 35px;">
+                <div style="background: linear-gradient(135deg, #faf8f5 0%, #fff 100%); padding: 30px; border-radius: 16px; text-align: center; border: 2px solid rgba(199, 91, 57, 0.3);">
+                    <div style="font-size: 0.85em; color: #8b7765; text-transform: uppercase; letter-spacing: 2px;">Life Path</div>
+                    <div style="font-family: 'Cormorant Garamond', serif; font-size: 3.5em; color: #c75b39; font-weight: 700; margin: 10px 0;">5</div>
+                    <div style="font-size: 1em; color: #c75b39; font-weight: 600;">Freedom Seeker</div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #faf8f5 0%, #fff 100%); padding: 30px; border-radius: 16px; text-align: center; border: 2px solid rgba(212, 165, 116, 0.3);">
+                    <div style="font-size: 0.85em; color: #8b7765; text-transform: uppercase; letter-spacing: 2px;">Destiny</div>
+                    <div style="font-family: 'Cormorant Garamond', serif; font-size: 3.5em; color: #d4a574; font-weight: 700; margin: 10px 0;">11</div>
+                    <div style="font-size: 1em; color: #d4a574; font-weight: 600;">Master Number</div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #faf8f5 0%, #fff 100%); padding: 30px; border-radius: 16px; text-align: center; border: 2px solid rgba(74, 111, 165, 0.3);">
+                    <div style="font-size: 0.85em; color: #8b7765; text-transform: uppercase; letter-spacing: 2px;">Soul Urge</div>
+                    <div style="font-family: 'Cormorant Garamond', serif; font-size: 3.5em; color: #4a6fa5; font-weight: 700; margin: 10px 0;">9</div>
+                    <div style="font-size: 1em; color: #4a6fa5; font-weight: 600;">Humanitarian</div>
+                </div>
+            </div>
+            
+            
+            <div class="tip-box warning">
+                <h4>🦅 Life Path 5: Freedom Seeker</h4>
+                
+                <p><strong>HURUF:</strong> C-A-R-S</p>
+                
+                <ul>
+                    <li><strong>C</strong>urious — Ingin tahu, penasaran</li>
+                    <li><strong>A</strong>dventurous — Petualang</li>
+                    <li><strong>R</strong>estless — Gelisah, butuh gerak</li>
+                    <li><strong>S</strong>ensual — Menikmati pengalaman</li>
+                </ul>
+                
+                <p><strong>Butuhan:</strong> FREEDOM (Kebebasan) + VARIETY (Variasi)<br>
+                <strong>Takut:</strong> RESTRICTION (Pembatasan) + ROUTINE (Rutinitas)</p>
+            </div>
+            
+            
+            <h3>Konflik Potensial: Anak (5) vs Ayah (6)</h3>
+            
+            <div class="insight-box">
+                <h4>⚡ Perbedaan Fundamental</h4>
+                
+                <table>
+                    <tr>
+                        <th>Aspek</th>
+                        <th>Ayah (Life Path 6)</th>
+                        <th>Anak (Life Path 5)</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Prioritas</strong></td>
+                        <td>Keluarga, tanggung jawab, stabilitas</td>
+                        <td style="color: #c75b39;">Kebebasan, petualangan, fleksibilitas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gaya Hidup</strong></td>
+                        <td>Homebody, predictable, aman</td>
+                        <td style="color: #c75b39;">Traveler, spontan, risky</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Struktur</strong></td>
+                        <td>Rigid, banyak aturan</td>
+                        <td style="color: #c75b39;">Fleksibel, anti-routine</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Komitmen</strong></td>
+                        <td>Setia, bertahan, long-term</td>
+                        <td style="color: #c75b39;">Many interests, sulit settle</td>
+                    </tr>
+                </table>
+                
+                
+                <div class="comparison-highlight" style="margin-top: 20px;">
+                    <strong>Potensi Konflik:</strong><br>
+                    Ayah melihat anak: "Tidak bertanggung jawab", "Tidak fokus", "Terlalu liar"<br>
+                    Anak melihat ayah: "Terlalu kaku", "Membosankan", "Terlalu banyak aturan"
+                </div>
+                
+                
+                <div class="tip-box success" style="margin-top: 20px;">
+                    <strong>Resolusi:</strong> Ayah harus memahami bahwa Life Path 5 bukan "tidak bertanggung jawab"—mereka hanya butuh kebebasan untuk eksplorasi sebelum settle down. Berikan struktur yang <strong>FLEKSIBEL</strong>.
+                </div>
+            </div>
+            
+            
+            <h3>The Devil Arcana: Shadow Work & Power</h3>
+            
+            <div class="tip-box danger">
+                <h4>😈 Memahami The Devil (Bukan Jahat!)</h4>
+                
+                <p>The Devil dalam Matrix of Destiny sering disalahpahami. Ini bukan pertanda jahat, tapi tentang:</p>
+                
+                <ol>
+                    <li><strong>Shadow Work:</strong> Anak akan menghadapi sisi gelap dirinya dan harus mengintegrasikannya menjadi kekuatan</li>
+                    
+                    <li><strong>Attachment/Rantai:</strong> Potensi terikat pada material (uang, status, kenikmatan)—<strong>TAPI rantai itu longgar dan bisa dilepas kapan saja</strong></li>
+                    
+                    <li><strong>Material Power:</strong> Kekuatan manifestasi material yang luar biasa jika disalurkan benar</li>
+                    
+                    <li><strong>Temptation:</strong> Akan ada momen-momen pilihan moral—ujian yang membangun karakter</li>
+                </ol>
+            </div>
+            
+            
+            <div class="tip-box dark">
+                <h4>💰 Kombinasi Emas: Life Path 5 + The Devil</h4>
+                
+                <p>Ini adalah kombinasi yang <strong>sangat kuat untuk entrepreneurship</strong>:</p>
+                
+                <div class="three-col" style="margin-top: 20px; color: #f5f0e8;">
+                    <div>
+                        <strong>Life Path 5</strong><br>
+                        Bisnis, travel, komunikasi
+                    </div>
+                    
+                    <div>
+                        <strong>The Devil</strong><br>
+                        Material mastery, bisnis
+                    </div>
+                    
+                    <div>
+                        <strong>Master 11</strong><br>
+                        Visi, inspirasi
+                    </div>
+                </div>
+                
+                
+                <p style="margin-top: 25px;"><strong>Potensi Karir:</strong> Entrepreneur, travel blogger, influencer, sales expert, digital nomad, startup founder.</p>
+                
+                <p><strong>Warning:</strong> Channel The Devil energy ke pursuits yang legal dan positif. Ajarkan early financial literacy.</p>
+            </div>
+        </div>
+
+
+        <!-- ============================================ -->
+        <!-- ZI WEI DOU SHU SECTION -->
+        <!-- ============================================ -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-icon">🌸</span>
+                <h2>Zi Wei Dou Shu - Astrologi Cina Mendalam</h2>
+            </div>
+            
+            <p class="section-intro">
+                Zi Wei Dou Shu adalah astrologi Cina yang lebih presisi dari BaZi. Anak ini dilahirkan dengan <strong>Zi Wei Emperor di Friends Palace</strong>—konfigurasi langka yang menunjukkan kepemimpinan melalui jejaring sosial.
+            </p>
+            
+            
+            <div class="tip-box purple">
+                <h4>🌟 Highlight Utama: Zi Wei Emperor + Body Palace di Friends</h4>
+                
+                <p><strong>Ini adalah konfigurasi yang SANGAT istimewa.</strong> Dalam Zi Wei Dou Shu, ada 12 Palace (Istana) yang mewakili aspek hidup. Posisi Zi Wei (star of destiny) menentukan karakter fundamental.</p>
+                
+                <div class="highlight-card" style="margin-top: 25px;">
+                    <div class="highlight-title">Zi Wei Emperor di Friends Palace (交友宫)</div>
+                    <p>
+                        Emperor (帝王星) adalah bintang kepemimpinan tertinggi. Biasanya itu ego-trip yang besar, tapi di <strong>Friends Palace</strong> berarti kekuatan melalui teman dan jaringan. Anak ini akan menjadi ALPHA dalam kelompok pertemanannya.
+                    </p>
+                </div>
+                
+                <div class="highlight-card" style="margin-top: 20px;">
+                    <div class="highlight-title">Body Palace (身宫) Juga di Friends Palace</div>
+                    <p>
+                        Body Palace menunjukkan di mana "akumulasi energi" terjadi sepanjang hidup. Sama dengan Life Palace berarti fokus penuh pada pertemanan dan jaringan. <strong>Kesehatan dan kesejahteraannya akan berkorelasi kuat dengan kualitas hubungan sosialnya.</strong>
+                    </p>
+                </div>
+            </div>
+            
+            
+            <h3>12 Palace Positions</h3>
+            
+            <div class="grid-3">
+                <div class="highlight-card">
+                    <div class="highlight-title">🏛️ Life Palace (命宫) - Lian Zhen (廉贞)</div>
+                    <p><strong>Lokasi:</strong> Xu (Dog)</p>
+                    <p>Spiritual seeker dengan passion mendalam. Kepala keras, terlalu banyak ide, suka meributkan hal tak penting. <strong>Driven oleh spiritual quest</strong> untuk arti kehidupan.</p>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="highlight-title">💰 Wealth Palace (财帛宫) - Tian Xiang (天相)</div>
+                    <p><strong>Lokasi:</strong> Wu (Horse)</p>
+                    <p>Steady income source. Perlu building skills dan competence untuk mendapatkan uang. Uang datang setelah mastery tercapai. Fokus di satu skill, jangan multi-tasking.</p>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="highlight-title">💼 Career Palace (事业宫) - Ju Men (巨门)</div>
+                    <p><strong>Lokasi:</strong> Xu (Dog)</p>
+                    <p>Karir berbasis komunikasi, penulisan, teaching. Terlalu banyak ide bisnis—risiko berpindah-pindah. Perlu fokus satu bidang sampai tingkat lanjut.</p>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="highlight-title">❤️ Marriage Palace (夫妻宫) - Tai Yang (太阳)</div>
+                    <p><strong>Lokasi:</strong> Zi (Rat)</p>
+                    <p><strong>PENTING:</strong> Sama dengan Ibu (Kheptin)!<br>
+                    Memerlukan partner yang bright, generous, supportive. Pernikahan akan mengangkat status sosialnya. Peringatan: jangan terlalu controlling terhadap pasangan.</p>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="highlight-title">👶 Children Palace (子女宫) - Wu Qu (武曲)</div>
+                    <p><strong>Lokasi:</strong> Chou (Ox)</div>
+                    <p><strong>WARRIOR LINEAGE CONTINUES!</strong> Anak-anaknya akan sangat berbakat dalam bidang yang memerlukan technical skills—engineer, developer, architect. Perlu teknik parenting yang berbeda (tidak bisa dimanja).</p>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="highlight-title">🌿 Health Palace (健康宫) - Tan Lang (贪狼)</div>
+                    <p><strong>Lokasi:</strong> You (Rooster)</p>
+                    <p>Weakness di liver, gallbladder, hormonal balance, metabolism. Jangan terlalu banyak makan oily/greasy food. Olahraga sangat penting—jangan sedentary.</p>
+                </div>
+            </div>
+            
+            
+            <h3>Flow Years Analysis (Decade & Year)</h3>
+            
+            <div class="tip-box info">
+                <h4>🌊 Periode-Penting dalam Hidup Anak</h4>
+                
+                <p><strong>Flow Years</strong> menunjukkan periode 10 tahun (decade) dan tahun tertentu yang membawa energi khusus.</p>
+            </div>
+            
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-age">0-11 Tahun</div>
+                    <div class="timeline-phase">Decade 1: Friends Palace (交友十年)</div>
+                    <p>Childhood berfokus pada pertemanan. <strong>Sangat penting untuk memilih teman yang tepat.</strong> Orang tua harus memperhatikan lingkungan sosialnya. Playgroup dan sekolah yang sehat secara sosial akan memengaruhi seluruh hidupnya.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-age">12-21 Tahun</div>
+                    <div class="timeline-phase">Decade 2: Career Palace (事业十年)</div>
+                    <p><strong>Pendidikan dan Career Path.</strong> Ini waktu menemukan passion dan arah karir. Karena Ju Men (巨门) di Career Palace, anak ini akan banyak bereksplorasi berbagai bidang. Berikan izin untuk mencoba banyak hal sebelum settle.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-age">22-31 Tahun</div>
+                    <div class="timeline-phase">Decade 3: Wealth Palace (财帛十年)</div>
+                    <p><strong>Building Wealth.</strong> Waktu mendapatkan penghasilan dan membangun assets. Karena Tian Xiang (天相) di Wealth Palace, perlu competence-based approach. Jangan cari "quick money"—build real skills.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-age">32-41 Tahun</div>
+                    <div class="timeline-phase">Decade 4: Self Palace (福德十年)</div>
+                    <p><strong>Finding Meaning.</strong> Existential questioning phase. Will ask: "Apakah ini yang aku mau?" Spiritual awakening dan pencarian makna kehidupan.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-age">42-51 Tahun</div>
+                    <div class="timeline-phase">Decade 5: Property Palace (田宅十年)</div>
+                    <p><strong>Building Legacy.</strong> Fokus pada property, rumah, tempat tinggal yang stabil. Bisa juga berarti "spiritual home" atau tempat ketenangan.</p>
+                </div>
+            </div>
+            
+            
+            <div class="insight-box">
+                <h4>⚔️ Wu Qu Lineage: Keturunan Pejuang</h4>
+                
+                <p><strong>KEBETULAN YANG MENAKJUBKAN:</strong> Ayah, Ibu, dan Anak SEMUANYA memiliki Wu Qu (武曲 - Star of Finance & Combat) di Children Palace.</p>
+                
+                <div class="tip-box warning" style="margin-top: 20px;">
+                    <strong>Apa artinya ini?</strong>
+                    <ul>
+                        <li><strong>Keturunan yang kuat secara mental.</strong> Ketiga generasi (Ayah, Ibu, Anak, dan anak-anak Anak nanti) semuanya akan memiliki karakter yang teguh dan mandiri.</li>
+                        <li><strong>Warrior energy terus berlanjut.</strong> Anak-anaknya nanti akan lebih tegas dan "sulit diajar" daripada dia sendiri.</li>
+                        <li><strong>Technical lineage.</strong> Keahlian di bidang teknik, teknologi, atau bidang yang memerlukan keterampilan praktis akan menjadi "warisan keluarga."</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ============================================ -->
+        <!-- PARENTING GUIDE SECTION -->
+        <!-- ============================================ -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-icon">👨‍👩‍👧</span>
+                <h2>Panduan Pengasuhan - Anak vs Orang Tua</h2>
+            </div>
+            
+            <p class="section-intro">
+                Perbedaan karakter antara anak dan orang tuanya—terutama ayahnya—adalah kesempatan untuk tumbuh, bukan masalah. Memahami perbedaan ini akan membuat perjalanan parenting lebih lancar dan bermakna.
+            </p>
+            
+            
+            <div class="comparison-highlight">
+                <h3 style="text-align: center; margin-bottom: 30px;">📊 Perbandingan Karakter: Ayah vs Anak</h3>
+                
+                <div class="matrix-table">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th style="padding: 15px; text-align: left;">Aspek</th>
+                                <th style="padding: 15px; text-align: center;">Zainal (Ayah)</th>
+                                <th style="padding: 15px; text-align: center;">Anak</th>
+                                <th style="padding: 15px; text-align: left;">Implikasi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 12px 15px; font-weight: 600;">Day Master (BaZi)</td>
+                                <td style="padding: 12px 15px; text-align: center;">Xin Metal (辛)</td>
+                                <td style="padding: 12px 15px; text-align: center; color: var(--danger);">Ji Earth (己)</td>
+                                <td style="padding: 12px 15px;">Beda fundamental: Xin rigid/independent, Ji flexible/supportive</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px 15px; font-weight: 600;">Human Design Type</td>
+                                <td style="padding: 12px 15px; text-align: center;">Manifesting Generator</td>
+                                <td style="padding: 12px 15px; text-align: center;" class="match">Manifesting Generator</td>
+                                <td style="padding: 12px 15px;" class="match">✅ SAMA! Energi produktif yang tinggi keduanya</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px 15px; font-weight: 600;">Authority (Inner Guidance)</td>
+                                <td style="padding: 12px 15px; text-align: center;">Splenic</td>
+                                <td style="padding: 12px 15px; text-align: center;" class="match">Splenic</td>
+                                <td style="padding: 12px 15px;" class="match">✅ SAMA! Intuitive decision makers—telepathic connection</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px 15px; font-weight: 600;">Profile (Life Theme)</td>
+                                <td style="padding: 12px 15px; text-align: center;">6/3 (6/3)</td>
+                                <td style="padding: 12px 15px; text-align: center; color: var(--danger);">6/2 (6/2)</td>
+                                <td style="padding: 12px 15px;">Beda: Ayah "role model on the roof," Anak "hermit yang dipanggil"</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px 15px; font-weight: 600;">Life Path (Numerology)</td>
+                                <td style="padding: 12px 15px; text-align: center;">6 (Nurturer)</td>
+                                <td style="padding: 12px 15px; text-align: center; color: var(--danger);">5 (Freedom Seeker)</td>
+                                <td style="padding: 12px 15px;">⚠️ POTENSIAL KONFLIK: Ayah tanggung jawab, Anak kebebasan</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px 15px; font-weight: 600;">Destiny Number</td>
+                                <td style="padding: 12px 15px; text-align: center;">1</td>
+                                <td style="padding: 12px 15px; text-align: center; color: var(--danger);">11 (Master Number)</td>
+                                <td style="padding: 12px 15px;">Anak punya spiritual calling—perlu lebih banyak spiritual support</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px 15px; font-weight: 600;">Communication Style</td>
+                                <td style="padding: 12px 15px; text-align: center;">Direct, Factual</td>
+                                <td style="padding: 12px 15px; text-align: center; color: var(--danger);">Energetic, Inspiring</td>
+                                <td style="padding: 12px 15px;">Ayah mungkin "kelewat blak-blakan" untuk anak yang sensitif</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            
+            <h3>Do's and Don'ts dalam Pengasuhan</h3>
+            
+            <div class="grid-2">
+                <div class="tip-box success">
+                    <h4>✅ LAKUKAN (Do's)</h4>
+                    
+                    <ol>
+                        <li><strong>Berikan Kebebasan dalam Struktur:</strong> Anak butuh freedom TAPI juga butuh boundaries. Aturan fleksibel, bukan rigid.</li>
+                        
+                        <li><strong>Hormati Waktu Sendiri (Hermit Time):</strong> Anak 6/2 butuh banyak waktu sendiri. Jangan dipaksa "sosialisasi" kalo lagi "masuk ke gua."</li>
+                        
+                        <li><strong>Respon dengan Inisiatif:</strong> Sebagai MG, dia akan "memulai" banyak hal. Support inisiatifnya, tapi ajarin untuk menyelesaikan.</li>
+                        
+                        <li><strong>Ajarkan Intuisi Sejak Dini:</strong> Semua Splenic—ajarkan untuk mendengarkan "feeling" di tubuhnya. "Apa perutmu bilang?"</li>
+                        
+                        <li><strong>Biarkan Bereksperimen:</strong> Life Path 5 + 6/2 = fase eksperimen 0-30 tahun. Berikan ruang untuk "mencoba banyak hal."</li>
+                        
+                        <li><strong>Channel The Devil Positif:</strong> Kepada The Devil (material mastery). Ajarkan financial literacy, entrepreneurship, manifestasi.</li>
+                        
+                        <li><strong>Fokus pada Satu Keahlian:</strong> Tian Xiang di Wealth Palace = uang datang setelah mastery. Dorong untuk mendalami satu bidang.</li>
+                    </ol>
+                </div>
+                
+                <div class="tip-box danger">
+                    <h4>❌ HINDARI (Don'ts)</h4>
+                    
+                    <ol>
+                        <li><strong>Jangan Terlalu Kontroling:</strong> Life Path 5 akan REBEL jika terlalu dibatasi. Larangan berlebihan = konflik besar.</li>
+                        
+                        <li><strong>Jangan Bandingkan dengan Orang Lain:</strong> Anak 6/2 akan merasa "dipanggil" saatnya nanti. Memaksa = menghilangkan natural talent.</li>
+                        
+                        <li><strong>Jangan Paksakan Karir Konvensional:</strong> Ju Men di Career Palace = karir berbasis komunikasi/teaching. Jangan paksa jadi engineer kalo passion-nya komunikasi.</li>
+                        
+                        <li><strong>Jangan Abaikan Peringatan Splenic:</strong> Kalo anak bilang "enggak enak" tentang seseorang/tempat—DENGARKAN. Instingnya kuat.</li>
+                        
+                        <li><strong>Jangan Terlalu Pelindung:</strong> MG butuh "bump into things" untuk belajar. Terlalu diproteksi = frustasi dan anger issues.</li>
+                        
+                        <li><strong>Jangan Kritik Talent Alamiah:</strong> Apapun yang datang mudah untuknya—itu talent. Jangan bilang "itu gampang, semua orang bisa."</li>
+                        
+                        <li><strong>Jangan Memaksakan Spiritual Path:</strong> Destiny 11 punya calling spiritual, tapi caranya sendiri. Jangan paksa agama/kepercayaan tertentu.</li>
+                    </ol>
+                </div>
+            </div>
+            
+            
+            <h3>Panduan Usia-Specific</h3>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-age">0-7 Tahun: Fase Eksplorasi Dasar</div>
+                    <div class="timeline-phase">Foundation Period</div>
+                    
+                    <ul>
+                        <li>Biarkan anak menyentuh, merasakan, menjelajah—MG butuh physical engagement</li>
+                        <li>Perhatikan hal apa yang datang "mudah" untuknya (natural talent indicators)</li>
+                        <li>Dorong bermain dengan berbagai anak (Friends Palace focus)</li>
+                        <li>Ajarkan untuk mengenali perasaan di tubuhnya (Splenic training)</li>
+                        <li>Jangan paksa untuk "perform" atau memenuhi ekspektasi</li>
+                    </ul>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-age">8-14 Tahun: Masa Hermit Awal</div>
+                    <div class="timeline-phase">The Natural Emerges</div>
+                    
+                    <ul>
+                        <li>Anak 6/2 mulai butuh lebih banyak waktu sendiri—NORMAL</li>
+                        <li>Jangan salah sangka sebagai "antisosial" atau "depresi"</li>
+                        <li>Support saat anak dipanggil untuk berbagi talent-nya</li>
+                        <li>Bantu mengidentifikasi passion vs passing interests</li>
+                        <li>Ekspektasi sekolah: berikan ruang untuk "learning style" yang unik</li>
+                    </ul>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-age">15-21 Tahun: Fase Eksperimen Intensif</div>
+                    <div class="timeline-phase">Life Path 5 Activation</div>
+                    
+                    
+                    <ul>
+                        <li><strong>Peringatan:</strong> Ini masa paling berpotensi konflik dengan Ayah (Life Path 6)</li>
+                        <li>Anak akan mencoba banyak identitas—fashion, music, friend groups</li>
+                        <li>Travel/Exchange programs akan sangat berharga</li>
+                        <li>Berikan kebebasan dengan boundaries yang jelas</li>
+                        <li>Hindari pertanyaan "Kamu mau jadi apa?" — terlalu dini untuk settle</li>
+                    </ul>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-age">22-30 Tahun: Moving to the Roof</div>
+                    <div class="timeline-phase">The Transition</div>
+                    
+                    <ul>
+                        <li>Anak 6/2 mulai transisi dari fase eksperimen ke fase role model</li>
+                        <li>Bisa jadi "lost" karena identitas lama tidak lagi cocok</li>
+                        <li>Support spiritual journey-nya (Destiny 11 calling)</li>
+                        <li>Ini waktu "getting life together"—bantukan dengan advice, bukan control</li>
+                        <li>Pertimbangkan gap year atau extended travel sebelum settle</li>
+                    </ul>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-age">30+ Tahun: The Role Model Phase</div>
+                    <div class="timeline-phase">Living the Truth</div>
+                    
+                    
+                    <ul>
+                        <li>Anak 6/2 sekarang menjadi role model yang otentik</li>
+                        <li>Wisdom-nya akan datang dari lived experience, bukan teori</li>
+                        <li>Support untuk membagikan kebijaksanaannya ke dunia</li>
+                        <li>Dia akan lebih settle dan fokus setelah 30</li>
+                        <li>Orang tua bisa "relax" — kerja keras sudah terbayar</li>
+                    </ul>
+                </div>
+            </div>
+            
+            
+            <div class="insight-box">
+                <h4>💝 Pesan Spesial untuk Zainal (Ayah)</h4>
+                
+                <p>Ayah dengan Life Path 6 dan Xin Metal, Anda secara natural akan ingin memberikan struktur yang kuat dan melindungi anak. <strong>Ini indah, tapi berhati-hatilah:</strong></p>
+                
+                <ul style="margin-top: 20px;">
+                    <li>Anak Anda dengan Ji Earth akan <strong>lebih mudah diarahkan</strong> dari pada Anda (Xin Metal yang keras kepala), TAPI dia juga lebih mudah <strong>kehilangan dirinya</strong> dalam proses.</li>
+                    
+                    <li><strong>Jangan proyeksikan kebutuhan Anda untuk struktur</strong> kepada anak. Dia butuh fleksibilitas.</li>
+                    
+                    <li>Ketika anak membuat keputusan yang menurut Anda "tidak bertanggung jawab," ingatlah: <strong>Life Path 5 belajar melalui pengalaman, bukan peringatan.</strong></li>
+                    
+                    <li>Anda berdua Splenic—gunakan koneksi intuitif ini untuk saling memahami tanpa kata-kata.</li>
+                </ul>
+                
+                
+                <div class="tip-box success" style="margin-top: 25px;">
+                    <strong>Your Child's Gift to You:</strong> Anak ini akan mengajarkan Anda untuk lebih fleksibel, lebih spontan, dan lebih percaya pada proses kehidupan. Mereka membawa kebebasan ke dalam hidup Anda yang terstruktur.
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- IMPORTANT DATES SECTION -->
+        <!-- ============================================ -->
+        <div class="section">
+            <div class="section-header">
+                <span class="section-icon">📅</span>
+                <h2>Tanggal-Tanggal Penting</h2>
+            </div>
+            
+            <p class="section-intro">
+                Beberapa tanggal penting yang perlu diperhatikan berdasarkan analisis BaZi, Human Design, dan Zi Wei Dou Shu.
+            </p>
+            
+            <div class="grid-2">
+                <div class="highlight-card">
+                    <div class="highlight-title">🎂 Saturn Return Pertama: ~2055-2056</div>
+                    <p>Usia sekitar 29-30 tahun. Ini adalah momen krusial dalam Human Design 6/2 — transisi dari fase eksperimen ke fase role model.</p>
+                    <p><strong>Dalam Zi Wei Dou Shu:</strong> Memasuki Decade Wealth Palace — waktu membangun kekayaan dan stabilitas.</p>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="highlight-title">🔄 Life Path 5 Checkpoint: 2026 + 5 = 2031</div>
+                    <p>Setiap 5 tahun, Life Path 5 mengalami "vibration boost." Usia 5, 10, 15, 20, 25, dst adalah waktu perubahan besar.</p>
+                    <p><strong>Penting:</strong> Usia 15 (2041) dan 20 (2046) akan menjadi turning points besar.</p>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="highlight-title">👑 Zi Wei Emperor Activation: Flow Year Xu</div>
+                    <p>Ketika Flow Year mengunjungi Palace Xu (Dog) — posisi Zi Wei Emperor-nya — akan ada "moment of destiny" yang membuka jalan kepemimpinannya.</p>
+                    <p>Estimasi: Usia 30-an, tergantung siklus individu.</p>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="highlight-title">💍 Marriage Palace Activation: Tai Yang Years</div>
+                    <p>Marriage Palace di Zi (Rat) dengan Tai Yang. Aktivasi terjadi saat Tai Yang atau Zi mengalami transformasi.</p>
+                    <p><strong>Indikator pernikahan potensial:</strong> Usia 28-32 (Flow Years dalam cycles tertentu)</p>
+                </div>
+            </div>
+            
+            <div class="tip-box info">
+                <h4>🌟 Catatan Penting tentang Prediksi</h4>
+                <p>Tanggal-tanggal di atas adalah <strong>estimasi berdasarkan pola astrologis</strong>. Kehidupan manusia dipengaruhi oleh:</p>
+                <ul style="margin-top: 15px;">
+                    <li><strong>Free will:</strong> Keputusan dan pilihan setiap saat</li>
+                    <li><strong>Lingkungan:</strong> Support system dan kondisi tumbuh</li>
+                    <li><strong>Karma:</strong> Pilihan masa lalu dan niat di masa kini</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Character Reader bukan ramalan mutlak,</strong> tapi peta potensi untuk membantu navigasi hidup.</p>
+            </div>
+        </div>
+EOF
+        <!-- ============================================ -->
+        <!-- FOOTER -->
+        <!-- ============================================ -->
+        <div class="footer">
+            <div class="footer-icon">✨</div>
+            
+            <p style="font-size: 1.4em; font-weight: 600; margin-bottom: 20px;">
+                "Setiap anak adalah bintang yang bersinar dengan cahayanya sendiri."
+            </p>
+            
+            <p style="color: var(--text-muted); font-style: italic;">
+                Character Reader Report ini dibuat dengan penuh cinta untuk Zainal, Kheptin, dan buah hati mereka yang akan lahir di bulan Juli 2026.
+            </p>
+            
+            <div class="blessing">
+                <div class="blessing-title">Doa untuk Anak</div>
+                
+                <p>Semoga anak ini tumbuh menjadi pribadi yang:</p>
+                
+                <ul style="list-style: none; margin-top: 20px;">
+                    <li>🌟 Bijaksana dalam menggunakan kekuatan Ji Earth-nya untuk menyokong orang lain</li>
+                    <li>🌟 Berani mengeksplorasi dunia dengan kebebasan Life Path 5-nya</li>
+                    <li>🌟 Mengikuti intuisi Splenic-nya dalam setiap keputusan</li>
+                    <li>🌟 Menjadi Role Model yang otentik setelah melewati fase eksplorasi</li>
+                    <li>🌟 Menggunakan energi The Devil untuk manifestasi positif dan entrepreneurship</li>
+                    <li>🌟 Selalu terhubung dengan orang tuanya melalui koneksi telepatik Splenic</li>
+                </ul>
+            </div>
+            
+            
+            <p style="margin-top: 40px; font-size: 0.9em; color: var(--text-muted);">
+                Dibuat dengan sistem Character Reader • BaZi • Human Design • Numerology • Zi Wei Dou Shu
+            </p>
+            
+            <p style="margin-top: 10px; font-size: 0.85em; color: var(--accent-gold);">
+                24 Juli 2026 • Keluarga Zainal & Kheptin
+            </p>
+        </div>
+        
+    </body>
+</html>
